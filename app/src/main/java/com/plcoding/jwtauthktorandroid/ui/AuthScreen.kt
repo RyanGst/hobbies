@@ -13,13 +13,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.plcoding.jwtauthktorandroid.auth.AuthRepository
 import com.plcoding.jwtauthktorandroid.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.ui.destinations.AuthScreenDestination
 import com.plcoding.jwtauthktorandroid.ui.destinations.SecretScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavController
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -61,42 +65,8 @@ fun AuthScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(32.dp),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(
-            value = state.signUpUsername,
-            onValueChange = {
-                viewModel.onEvent(AuthUiEvent.SignUpUsernameChanged(it))
-            },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = {
-                Text(text = "Username")
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            value = state.signUpPassword,
-            onValueChange = {
-                viewModel.onEvent(AuthUiEvent.SignUpPasswordChanged(it))
-            },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = {
-                Text(text = "Password")
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                viewModel.onEvent(AuthUiEvent.SignUp)
-            },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text(text = "Sign up")
-        }
-
-        Spacer(modifier = Modifier.height(64.dp))
-
         TextField(
             value = state.signInUsername,
             onValueChange = {
@@ -138,4 +108,23 @@ fun AuthScreen(
             CircularProgressIndicator()
         }
     }
+}
+
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF, showSystemUi = true)
+@Composable
+fun AuthScreenPreview() {
+    AuthScreen(EmptyDestinationsNavigator, viewModel = MainViewModel(object : AuthRepository {
+        override suspend fun signUp(username: String, password: String): AuthResult<Unit> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun signIn(username: String, password: String): AuthResult<Unit> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun authenticate(): AuthResult<Unit> {
+            TODO("Not yet implemented")
+        }
+    }))
 }
