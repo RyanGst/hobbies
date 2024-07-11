@@ -18,12 +18,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
+    private const val hostname = "http://192.168.5.9"
+    private const val port = 8080
+    private const val baseUrl = "$hostname:$port/"
     @Provides
     @Singleton
     fun provideAuthApi(): AuthApi {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.0.2:8080/")
+            .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()
