@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.ui
+package com.plcoding.jwtauthktorandroid.ui.auth
 
 sealed class AuthUiEvent {
 

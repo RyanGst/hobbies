@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.ui
+package com.plcoding.jwtauthktorandroid.ui.auth
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.jwtauthktorandroid.auth.AuthRepository
 import com.plcoding.jwtauthktorandroid.auth.AuthResult
+import com.plcoding.jwtauthktorandroid.ui.auth.AuthState
+import com.plcoding.jwtauthktorandroid.ui.auth.AuthUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

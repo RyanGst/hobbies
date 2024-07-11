@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.ui
+package com.plcoding.jwtauthktorandroid.ui.auth
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -21,7 +21,6 @@ import com.plcoding.jwtauthktorandroid.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.ui.destinations.AuthScreenDestination
 import com.plcoding.jwtauthktorandroid.ui.destinations.SecretScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavController
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.coroutines.flow.collect
