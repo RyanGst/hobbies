@@ -37,7 +37,7 @@ class AuthRepositoryImpl(
                 )
             )
             prefs.edit()
-                .putString("jwt", response.token)
+                .putString("jwt", response.accessToken)
                 .apply()
             AuthResult.Authorized()
         } catch(e: HttpException) {
