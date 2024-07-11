@@ -3,9 +3,9 @@ package com.plcoding.jwtauthktorandroid.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.plcoding.jwtauthktorandroid.auth.AuthApi
-import com.plcoding.jwtauthktorandroid.auth.AuthRepository
-import com.plcoding.jwtauthktorandroid.auth.AuthRepositoryImpl
+import com.plcoding.jwtauthktorandroid.data.auth.AuthApi
+import com.plcoding.jwtauthktorandroid.data.auth.AuthRepository
+import com.plcoding.jwtauthktorandroid.data.auth.AuthRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

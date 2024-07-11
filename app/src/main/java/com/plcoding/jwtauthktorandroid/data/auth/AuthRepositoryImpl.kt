@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.auth
+package com.plcoding.jwtauthktorandroid.data.auth
 
 import android.content.SharedPreferences
 import retrofit2.HttpException

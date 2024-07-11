@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.auth
+package com.plcoding.jwtauthktorandroid.data.auth
 
 sealed class AuthResult<T>(val data: T? = null) {
     class Authorized<T>(data: T? = null): AuthResult<T>(data)

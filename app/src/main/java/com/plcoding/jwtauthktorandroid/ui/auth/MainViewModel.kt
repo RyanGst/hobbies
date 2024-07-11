@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.jwtauthktorandroid.auth.AuthRepository
-import com.plcoding.jwtauthktorandroid.auth.AuthResult
+import com.plcoding.jwtauthktorandroid.data.auth.AuthRepository
+import com.plcoding.jwtauthktorandroid.data.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.ui.auth.AuthState
 import com.plcoding.jwtauthktorandroid.ui.auth.AuthUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,18 +40,6 @@ class MainViewModel @Inject constructor(
             is AuthUiEvent.SignIn -> {
                 signIn()
             }
-        }
-    }
-
-    private fun signUp() {
-        viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            val result = repository.signUp(
-                username = state.signUpUsername,
-                password = state.signUpPassword
-            )
-            resultChannel.send(result)
-            state = state.copy(isLoading = false)
         }
     }
 

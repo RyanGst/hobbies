@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.auth
+package com.plcoding.jwtauthktorandroid.data.auth
 
 data class AuthRequest(
     val username: String,

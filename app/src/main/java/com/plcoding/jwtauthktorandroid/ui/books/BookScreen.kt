@@ -10,11 +10,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun SecretScreen() {
+fun BookScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "You're authenticated!")
+        Text(text = "You're in books page!")
     }
 }

@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.auth
+package com.plcoding.jwtauthktorandroid.data.auth
 
 import retrofit2.http.Body
 import retrofit2.http.GET

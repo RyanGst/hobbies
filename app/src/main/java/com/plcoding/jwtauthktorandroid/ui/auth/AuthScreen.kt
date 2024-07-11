@@ -16,10 +16,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.plcoding.jwtauthktorandroid.auth.AuthRepository
-import com.plcoding.jwtauthktorandroid.auth.AuthResult
+import com.plcoding.jwtauthktorandroid.data.auth.AuthRepository
+import com.plcoding.jwtauthktorandroid.data.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.ui.destinations.AuthScreenDestination
-import com.plcoding.jwtauthktorandroid.ui.destinations.SecretScreenDestination
+import com.plcoding.jwtauthktorandroid.ui.destinations.BookScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -37,7 +37,7 @@ fun AuthScreen(
         viewModel.authResults.collect { result ->
             when(result) {
                 is AuthResult.Authorized -> {
-                    navigator.navigate(SecretScreenDestination) {
+                    navigator.navigate(BookScreenDestination) {
                         popUpTo(AuthScreenDestination.route) {
                             inclusive = true
                         }

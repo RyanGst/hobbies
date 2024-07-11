@@ -1,4 +1,4 @@
-package com.plcoding.jwtauthktorandroid.auth
+package com.plcoding.jwtauthktorandroid.data.auth
 
 interface AuthRepository {
     suspend fun signUp(username: String, password: String): AuthResult<Unit>
