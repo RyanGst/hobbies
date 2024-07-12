@@ -17,7 +17,7 @@ interface AuthApi {
         @Body request: AuthRequest
     ): TokenResponse
 
-    @GET("authenticate")
+    @GET("api/book/")
     suspend fun authenticate(
         @Header("Authorization") token: String
     )

@@ -57,11 +57,10 @@ class AuthRepositoryImpl(
             api.authenticate("Bearer $token")
             AuthResult.Authorized()
         } catch(e: HttpException) {
-            AuthResult.Authorized()
+            AuthResult.Unauthorized()
 
         } catch (e: Exception) {
-            AuthResult.Authorized()
-
+            AuthResult.UnknownError()
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -39,13 +40,16 @@ fun BookItem(book: Book) {
                 text = book.title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 4.dp)
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .width(220.dp)
             )
             Text(
                 text = book.author,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Light,
-                color = Color.Gray
+                color = Color.Gray,
+                modifier = Modifier.width(220.dp)
             )
 
             Row {
@@ -80,5 +84,17 @@ fun BookItem(book: Book) {
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF, showSystemUi = true)
 @Composable
 fun BookItemPreview() {
-    BookItem(Book(1, "Book 1", "Ryan", 1, "2401"))
+    Column {
+
+        BookItem(Book(1, "Book 1", "Ryan", 1, "2401"))
+        BookItem(
+            Book(
+                1,
+                "Book WITH A VERY VERY VERY BIG TEXT OMG THIS SO SO BIG",
+                "Ryan",
+                1,
+                "2401"
+            )
+        )
+    }
 }

@@ -11,7 +11,8 @@ interface BookApi {
 
     @GET("api/book/")
     suspend fun getBooks(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Header("Accept") accept: String = "application/json",
     ): List<Book>
 
     @GET("api/book/{id}")

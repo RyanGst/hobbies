@@ -33,6 +33,10 @@ class BookViewModel @Inject constructor(
             is BookUiEvent.GetBooks -> {
                 getBooks()
             }
+            BookUiEvent.CreateBook -> {
+
+            }
+            BookUiEvent.ShowError -> TODO()
         }
     }
 
@@ -42,11 +46,7 @@ class BookViewModel @Inject constructor(
             val result = repository.getBooks()
             resultChannel.send(result)
             state = state.copy(isLoading = false)
-            state.books = when(result) {
-                is BookQueryResult.Success -> result.data!!
-                is BookQueryResult.Error -> emptyList()
-                is BookQueryResult.UnknownError -> emptyList()
-            }
+
         }
     }
 
