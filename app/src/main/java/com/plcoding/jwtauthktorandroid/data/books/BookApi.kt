@@ -9,7 +9,7 @@ import retrofit2.http.PUT
 
 interface BookApi {
 
-    @GET("api/book")
+    @GET("api/book/")
     suspend fun getBooks(
         @Header("Authorization") token: String
     ): List<Book>
@@ -20,7 +20,7 @@ interface BookApi {
         @Body id: Int
     ): Book
 
-    @POST("api/book")
+    @POST("api/book/")
     suspend fun addBook(
         @Header("Authorization") token: String,
         @Body book: Book
@@ -32,7 +32,7 @@ interface BookApi {
         @Body id: Int
     )
 
-    @PUT("api/book")
+    @PUT("api/book/")
     suspend fun updateBook(
         @Header("Authorization") token: String,
         @Body book: Book

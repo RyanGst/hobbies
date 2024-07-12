@@ -61,5 +61,4 @@ object AppModule {
     fun provideBookRepository(api: BookApi, prefs: SharedPreferences): BookRepository {
         return BookRepositoryImpl(api, prefs)
     }
-
 }

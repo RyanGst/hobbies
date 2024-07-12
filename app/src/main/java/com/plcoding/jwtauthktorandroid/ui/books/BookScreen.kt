@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +33,10 @@ fun BookScreen(
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Books")
+        Text(text = "${state.books.size} =Books")
+        Button(onClick = { viewModel.onEvent(BookUiEvent.GetBooks) }) {
+            Text(text = "Load Books")
+        }
         LazyColumn {
             items(state.books) { book ->
                 BookItem(book)

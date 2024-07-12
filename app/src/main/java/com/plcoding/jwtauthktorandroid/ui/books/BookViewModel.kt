@@ -5,13 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.jwtauthktorandroid.data.auth.AuthRepository
-import com.plcoding.jwtauthktorandroid.data.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.data.books.Book
 import com.plcoding.jwtauthktorandroid.data.books.BookQueryResult
 import com.plcoding.jwtauthktorandroid.data.books.BookRepository
-import com.plcoding.jwtauthktorandroid.ui.auth.AuthState
-import com.plcoding.jwtauthktorandroid.ui.auth.AuthUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -26,7 +22,7 @@ class BookViewModel @Inject constructor(
     var state by mutableStateOf(BookState())
 
     private val resultChannel = Channel<BookQueryResult<List<Book>>>()
-    val authResults = resultChannel.receiveAsFlow()
+    val bookResults = resultChannel.receiveAsFlow()
 
     init {
         getBooks()
@@ -46,6 +42,11 @@ class BookViewModel @Inject constructor(
             val result = repository.getBooks()
             resultChannel.send(result)
             state = state.copy(isLoading = false)
+            state.books = when(result) {
+                is BookQueryResult.Success -> result.data!!
+                is BookQueryResult.Error -> emptyList()
+                is BookQueryResult.UnknownError -> emptyList()
+            }
         }
     }
 
