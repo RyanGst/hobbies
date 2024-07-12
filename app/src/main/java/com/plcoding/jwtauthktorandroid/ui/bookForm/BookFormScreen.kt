@@ -34,6 +34,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.plcoding.jwtauthktorandroid.data.books.Book
+import com.plcoding.jwtauthktorandroid.data.books.BookQueryResult
+import com.plcoding.jwtauthktorandroid.data.books.BookRepository
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -42,6 +46,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 @Destination
 fun BookFormScreen(
     navigator: DestinationsNavigator,
+    viewModel: BookFormViewModel = hiltViewModel()
 ) {
 
     val scaffoldState = rememberScaffoldState()
@@ -136,8 +141,30 @@ fun BookFormScreen(
 }
 
 
-@Preview
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF, showSystemUi = true)
 @Composable
 fun BookFormScreenPreview() {
-    BookFormScreen(EmptyDestinationsNavigator)
+    BookFormScreen(EmptyDestinationsNavigator, BookFormViewModel(
+        object : BookRepository {
+            override suspend fun getBooks(): BookQueryResult<List<Book>> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getBookById(id: Int): BookQueryResult<Book> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun addBook(book: Book): BookQueryResult<Book> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun updateBook(book: Book): BookQueryResult<Book> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun deleteBook(id: Int): BookQueryResult<Unit> {
+                TODO("Not yet implemented")
+            }
+        }
+    ))
 }

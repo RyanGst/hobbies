@@ -17,35 +17,70 @@ import javax.inject.Inject
 @HiltViewModel
 class BookFormViewModel @Inject constructor(
     private val repository: BookRepository
-): ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(BookFormState())
 
-    private val resultChannel = Channel<BookQueryResult<List<Book>>>()
+    private val resultChannel = Channel<BookQueryResult<Book>>()
     val bookFormResult = resultChannel.receiveAsFlow()
 
+    val authors : List<String> = listOf(
+        "Robert C. Martin",
+        "Martin Fowler",
+        "Kent Beck",
+        "Erick Evans",
+        "David Flanagan",
+        "David Goggins",
+    )
 
     fun onEvent(event: BookFormUiEvent) {
-        when(event) {
+        when (event) {
             is BookFormUiEvent.AuthorChanged -> {
                 state = state.copy(author = event.value)
             }
+
             is BookFormUiEvent.LaunchDateChanged -> {
                 state = state.copy(launchDate = event.value)
 
             }
+
             is BookFormUiEvent.PriceChanged -> {
                 state = state.copy(price = event.value.toIntOrNull())
             }
+
             BookFormUiEvent.SaveBook -> {
                 saveBook()
             }
+
             is BookFormUiEvent.TitleChanged -> {
                 state = state.copy(title = event.value)
             }
         }
     }
 
-    private fun saveBook() {}
+    private fun saveBook() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val book = Book(
+                title = state.title,
+                author = state.author,
+                price = state.price!!,
+                launchDate = state.launchDate
+            )
+            val result = repository.addBook(
+                book
+            )
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+        }
+    }
 
+    private fun updateBook(book: Book) {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.updateBook(book)
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+        }
+    }
 }

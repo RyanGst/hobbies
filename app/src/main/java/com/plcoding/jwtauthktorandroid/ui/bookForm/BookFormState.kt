@@ -5,5 +5,5 @@ data class BookFormState(
     val title: String = "",
     val author: String = "",
     val price: Int? = null,
-    val launchDate: String = ""
+    val launchDate: String = "",
 )
