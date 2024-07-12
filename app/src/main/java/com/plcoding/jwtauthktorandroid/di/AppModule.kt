@@ -6,6 +6,9 @@ import android.content.SharedPreferences
 import com.plcoding.jwtauthktorandroid.data.auth.AuthApi
 import com.plcoding.jwtauthktorandroid.data.auth.AuthRepository
 import com.plcoding.jwtauthktorandroid.data.auth.AuthRepositoryImpl
+import com.plcoding.jwtauthktorandroid.data.books.BookApi
+import com.plcoding.jwtauthktorandroid.data.books.BookRepository
+import com.plcoding.jwtauthktorandroid.data.books.BookRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +36,16 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideBookApi(): BookApi {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+            .create()
+    }
+
+    @Provides
+    @Singleton
     fun provideSharedPref(app: Application): SharedPreferences {
         return app.getSharedPreferences("prefs", MODE_PRIVATE)
     }
@@ -42,4 +55,11 @@ object AppModule {
     fun provideAuthRepository(api: AuthApi, prefs: SharedPreferences): AuthRepository {
         return AuthRepositoryImpl(api, prefs)
     }
+
+    @Provides
+    @Singleton
+    fun provideBookRepository(api: BookApi, prefs: SharedPreferences): BookRepository {
+        return BookRepositoryImpl(api, prefs)
+    }
+
 }
