@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -31,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,13 +46,16 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
+
 @Composable
 @Destination
 fun BookFormScreen(
     navigator: DestinationsNavigator,
     viewModel: BookFormViewModel = hiltViewModel()
 ) {
-
+    val context = LocalContext.current
+    val state = viewModel.state
+    val authors = viewModel.authors
     val scaffoldState = rememberScaffoldState()
     Scaffold(
         scaffoldState = scaffoldState,
@@ -70,8 +77,8 @@ fun BookFormScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                value = "",
-                onValueChange = { },
+                value = state.title,
+                onValueChange = { viewModel.onEvent(BookFormUiEvent.TitleChanged(it)) },
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -80,7 +87,7 @@ fun BookFormScreen(
             var expanded by remember { mutableStateOf(false) }
             Box(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
-                    value = "",
+                    value = state.author,
                     onValueChange = {},
                     label = { Text("Author") },
                     readOnly = true,
@@ -101,11 +108,13 @@ fun BookFormScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    DropdownMenuItem(onClick = {
-//                        selectedAuthor = author
-                        expanded = false
-                    }) {
-                        Text(text = "some option")
+                    authors.forEach { author ->
+                        DropdownMenuItem(onClick = {
+                            viewModel.onEvent(BookFormUiEvent.AuthorChanged(author))
+                            expanded = false
+                        }) {
+                            Text(text = author)
+                        }
                     }
 
                 }
@@ -113,8 +122,8 @@ fun BookFormScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = { },
+                value = state.price?.toString() ?: "",
+                onValueChange = { viewModel.onEvent(BookFormUiEvent.PriceChanged(it)) },
                 label = { Text("Price") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
@@ -122,19 +131,25 @@ fun BookFormScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = { },
+                value = state.launchDate,
+                onValueChange = { viewModel.onEvent(BookFormUiEvent.LaunchDateChanged(it)) },
                 label = { Text("Launch Date") },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-                // Handle book creation logic here
-//                Toast.makeText(context, "Book Created", Toast.LENGTH_SHORT).show()
-                navigator.navigateUp()
-            }) {
-                Text("Create Book")
+            Button(
+                onClick = { viewModel.onEvent(BookFormUiEvent.SaveBook) },
+                enabled = !state.isLoading
+            ) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.onPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Text("Create Book")
+                }
             }
         }
     }
