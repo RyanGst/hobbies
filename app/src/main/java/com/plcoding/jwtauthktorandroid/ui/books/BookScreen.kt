@@ -71,6 +71,8 @@ fun BookScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
+                is BookQueryResult.Idle -> TODO()
             }
         }
     }
