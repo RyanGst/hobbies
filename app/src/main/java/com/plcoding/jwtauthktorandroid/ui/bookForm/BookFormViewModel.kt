@@ -1,5 +1,6 @@
 package com.plcoding.jwtauthktorandroid.ui.bookForm
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -52,6 +53,10 @@ class BookFormViewModel @Inject constructor(
                 saveBook()
             }
 
+            is BookFormUiEvent.LoadBook -> {
+                loadBook(event.bookId)
+            }
+
             is BookFormUiEvent.TitleChanged -> {
                 state = state.copy(title = event.value)
             }
@@ -69,22 +74,18 @@ class BookFormViewModel @Inject constructor(
                 price = state.price!!,
                 launchDate = state.launchDate
             )
-            val result = repository.addBook(
-                book
-            )
+
+            val result: BookQueryResult<Book> = if (state.id == null) {
+                repository.addBook(book)
+            } else {
+                repository.updateBook(book.copy(id = state.id))
+            }
+
             resultChannel.send(result)
             state = state.copy(isLoading = false)
         }
     }
 
-    private fun updateBook(book: Book) {
-        viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            val result = repository.updateBook(book)
-            resultChannel.send(result)
-            state = state.copy(isLoading = false)
-        }
-    }
 
     private fun loadBook(bookId: Int) {
         viewModelScope.launch {
@@ -102,6 +103,8 @@ class BookFormViewModel @Inject constructor(
                     )
                 }
                 else -> {
+                    Log.d("BookFormViewModel", "Error loading book")
+                    Log.d("BookFormViewModel", result?.data.toString())
                     resultChannel.send(result)
                     state = state.copy(isLoading = false)
                 }

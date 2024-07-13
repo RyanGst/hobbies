@@ -25,7 +25,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.rememberScaffoldState
@@ -42,11 +41,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.plcoding.jwtauthktorandroid.data.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.data.books.Book
 import com.plcoding.jwtauthktorandroid.data.books.BookQueryResult
 import com.plcoding.jwtauthktorandroid.data.books.BookRepository
-import com.plcoding.jwtauthktorandroid.ui.destinations.AuthScreenDestination
 import com.plcoding.jwtauthktorandroid.ui.destinations.BookScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -57,8 +54,9 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 @Composable
 @Destination
 fun BookFormScreen(
+    bookId: String? = null,
     navigator: DestinationsNavigator,
-    viewModel: BookFormViewModel = hiltViewModel()
+    viewModel: BookFormViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val state = viewModel.state
@@ -86,11 +84,20 @@ fun BookFormScreen(
             }
         }
     }
+
+    LaunchedEffect(bookId) {
+        if (bookId != null) {
+            viewModel.onEvent(BookFormUiEvent.LoadBook(bookId.toInt()))
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = { Text("Create New Book") },
+                title = {
+                    Text(if (bookId == null) "Create Book" else "Edit Book")
+                },
                 navigationIcon = {
                     IconButton(onClick = { navigator.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -177,7 +184,7 @@ fun BookFormScreen(
                         modifier = Modifier.size(24.dp)
                     )
                 } else {
-                    Text("Create Book")
+                    Text(if (bookId == null) "Create Book" else "Save Book")
                 }
             }
         }
@@ -188,7 +195,7 @@ fun BookFormScreen(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF, showSystemUi = true)
 @Composable
 fun BookFormScreenPreview() {
-    BookFormScreen(EmptyDestinationsNavigator, BookFormViewModel(
+    BookFormScreen(null, EmptyDestinationsNavigator, BookFormViewModel(
         object : BookRepository {
             override suspend fun getBooks(): BookQueryResult<List<Book>> {
                 TODO("Not yet implemented")

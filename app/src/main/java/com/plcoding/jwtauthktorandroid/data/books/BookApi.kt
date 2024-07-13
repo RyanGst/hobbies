@@ -6,6 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.QueryMap
 
 interface BookApi {
 
@@ -16,9 +18,9 @@ interface BookApi {
     ): List<Book>
 
     @GET("api/book/{id}")
-    suspend fun getBook(
+    suspend fun getBookById(
         @Header("Authorization") token: String,
-        @Body id: Int
+        @Path("id") id: Int
     ): Book
 
     @POST("api/book/")
@@ -30,7 +32,7 @@ interface BookApi {
     @DELETE("api/book/{id}")
     suspend fun deleteBook(
         @Header("Authorization") token: String,
-        @Body id: Int
+        @Path("id") id: Int
     )
 
     @PUT("api/book/")

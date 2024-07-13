@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookViewModel @Inject constructor(
     private val repository: BookRepository
-): ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(BookState())
 
@@ -29,15 +29,31 @@ class BookViewModel @Inject constructor(
     }
 
     fun onEvent(event: BookUiEvent) {
-        when(event) {
+        when (event) {
             is BookUiEvent.GetBooks -> {
                 getBooks()
             }
+
             BookUiEvent.CreateBook -> {
 
             }
+
             BookUiEvent.ShowError -> TODO()
+            is BookUiEvent.DeleteBook -> {
+                deleteBook(event.id)
+            }
         }
+    }
+
+    private fun deleteBook(id: Int) {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.deleteBook(id)
+            state = state.copy(isLoading = false)
+            getBooks()
+
+        }
+
     }
 
     private fun getBooks() {
@@ -46,7 +62,6 @@ class BookViewModel @Inject constructor(
             val result = repository.getBooks()
             resultChannel.send(result)
             state = state.copy(isLoading = false)
-
         }
     }
 

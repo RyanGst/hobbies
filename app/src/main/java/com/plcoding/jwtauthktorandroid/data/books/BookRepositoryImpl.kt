@@ -22,9 +22,10 @@ class BookRepositoryImpl(
     override suspend fun getBookById(id: Int): BookQueryResult<Book> {
         return try {
             val token = prefs.getString("jwt", null) ?: return BookQueryResult.UnknownError()
-            val book = api.getBook("Bearer $token", id)
+            val book = api.getBookById("Bearer $token", id)
             BookQueryResult.Success(book)
         } catch (e: Exception) {
+            Log.e("BookRepositoryImpl", "getBookById: ${e.message}")
             BookQueryResult.UnknownError()
         }
     }

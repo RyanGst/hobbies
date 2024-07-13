@@ -27,7 +27,11 @@ import androidx.compose.ui.unit.sp
 import com.plcoding.jwtauthktorandroid.data.books.Book
 
 @Composable
-fun BookItem(book: Book) {
+fun BookItem(
+    book: Book,
+    onEdit: (Book) -> Unit,
+    onDelete: (Book) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -63,14 +67,14 @@ fun BookItem(book: Book) {
         Column {
             Row {
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { onEdit(book) },
                 ) {
                     Icon(Icons.Filled.Edit, contentDescription = "Edit", tint = Color.Green)
                 }
                 Spacer(modifier = Modifier.padding(8.dp))
                 Box {
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { onDelete(book) },
                     ) {
                         Icon(Icons.Filled.Close, contentDescription = "Delete", tint = Color.Red)
                     }
@@ -86,15 +90,8 @@ fun BookItem(book: Book) {
 fun BookItemPreview() {
     Column {
 
-        BookItem(Book(1, "Book 1", "Ryan", 1, "2401"))
-        BookItem(
-            Book(
-                1,
-                "Book WITH A VERY VERY VERY BIG TEXT OMG THIS SO SO BIG",
-                "Ryan",
-                1,
-                "2401"
-            )
+        BookItem(Book(1, "Book 1", "Ryan", 1, "2401"), onEdit = { /*TODO*/ },
+            onDelete = { /*TODO*/ }
         )
     }
 }

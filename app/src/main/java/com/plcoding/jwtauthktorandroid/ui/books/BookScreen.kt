@@ -43,6 +43,11 @@ fun BookScreen(
     val bookResults by viewModel.bookResults.collectAsState(initial = BookQueryResult.Idle())
 
     LaunchedEffect(viewModel, context) {
+        viewModel.onEvent(BookUiEvent.GetBooks)
+    }
+
+
+    LaunchedEffect(viewModel, context) {
         viewModel.bookResults.collect { result ->
             when (result) {
                 is BookQueryResult.Success -> {
@@ -94,9 +99,7 @@ fun BookScreen(
                 Text(text = "Load Books")
             }
             Button(onClick = {
-                navigator.navigate(BookFormScreenDestination) {
-
-                }
+                navigator.navigate(BookFormScreenDestination())
             }) {
                 Text(text = "Create New Book")
             }
@@ -105,7 +108,15 @@ fun BookScreen(
             } else {
                 LazyColumn {
                     items(books) { book ->
-                        BookItem(book)
+                        BookItem(
+                            book,
+                            onEdit = {
+                                navigator.navigate(BookFormScreenDestination(bookId = it.id.toString()))
+                            },
+                            onDelete = {
+                                viewModel.onEvent(BookUiEvent.DeleteBook(it.id!!))
+                            }
+                        )
                     }
                 }
             }
