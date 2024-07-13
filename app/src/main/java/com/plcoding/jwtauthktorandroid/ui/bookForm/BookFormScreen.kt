@@ -1,5 +1,7 @@
 package com.plcoding.jwtauthktorandroid.ui.bookForm
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,14 +42,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.plcoding.jwtauthktorandroid.data.auth.AuthResult
 import com.plcoding.jwtauthktorandroid.data.books.Book
 import com.plcoding.jwtauthktorandroid.data.books.BookQueryResult
 import com.plcoding.jwtauthktorandroid.data.books.BookRepository
+import com.plcoding.jwtauthktorandroid.ui.destinations.AuthScreenDestination
+import com.plcoding.jwtauthktorandroid.ui.destinations.BookScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @Destination
 fun BookFormScreen(
@@ -57,6 +64,28 @@ fun BookFormScreen(
     val state = viewModel.state
     val authors = viewModel.authors
     val scaffoldState = rememberScaffoldState()
+    LaunchedEffect(viewModel, context) {
+        viewModel.bookFormResult.collect { result ->
+            when (result) {
+                is BookQueryResult.Success -> {
+                    navigator.navigate(BookScreenDestination)
+                }
+
+                is BookQueryResult.Error -> Toast.makeText(
+                    context,
+                    "An error occurred",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                is BookQueryResult.Idle -> TODO()
+                is BookQueryResult.UnknownError -> Toast.makeText(
+                    context,
+                    "An error occurred",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {

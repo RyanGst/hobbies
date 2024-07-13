@@ -55,6 +55,8 @@ class BookFormViewModel @Inject constructor(
             is BookFormUiEvent.TitleChanged -> {
                 state = state.copy(title = event.value)
             }
+
+            else -> {}
         }
     }
 
