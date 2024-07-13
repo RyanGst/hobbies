@@ -6,4 +6,6 @@ sealed class BookFormUiEvent {
     data class PriceChanged(val value: String): BookFormUiEvent()
     data class LaunchDateChanged(val value: String): BookFormUiEvent()
     object SaveBook: BookFormUiEvent()
+    data class LoadBook(val bookId: Int) : BookFormUiEvent()
+
 }

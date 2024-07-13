@@ -85,4 +85,27 @@ class BookFormViewModel @Inject constructor(
             state = state.copy(isLoading = false)
         }
     }
+
+    private fun loadBook(bookId: Int) {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            when (val result = repository.getBookById(bookId)) {
+                is BookQueryResult.Success -> {
+                    val book = result.data!!
+                    state = state.copy(
+                        id = book.id,
+                        title = book.title,
+                        author = book.author,
+                        price = book.price,
+                        launchDate = book.launchDate,
+                        isLoading = false
+                    )
+                }
+                else -> {
+                    resultChannel.send(result)
+                    state = state.copy(isLoading = false)
+                }
+            }
+        }
+    }
 }

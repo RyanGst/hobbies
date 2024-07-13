@@ -109,7 +109,7 @@ fun BookFormScreen(
                 value = state.title,
                 onValueChange = { viewModel.onEvent(BookFormUiEvent.TitleChanged(it)) },
                 label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(8.dp))
 
